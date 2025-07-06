@@ -1,0 +1,34 @@
+# Multi-Camera Face Recognition System Requirements
+
+# Core computer vision and ML libraries
+opencv-python>=4.8.0
+numpy>=1.21.0
+
+# DeepFace for age and gender detection
+deepface>=0.0.79
+tensorflow>=2.12.0  # Required by DeepFace
+
+# Image processing and utilities
+Pillow>=9.0.0
+
+# Additional face analysis dependencies
+mtcnn>=0.1.1  # Face detection backend for DeepFace
+retina-face>=0.0.13  # Alternative face detection backend
+
+# FAISS for face embeddings database
+faiss-cpu>=1.7.4  # Use faiss-gpu for GPU acceleration
+
+# Database connectivity
+# SQLite is built into Python (no additional dependencies needed)
+
+# Optional performance improvements
+matplotlib>=3.5.0  # For visualization utilities
+
+# Memory optimization (optional)
+psutil>=5.9.0
+
+# Logging and utilities
+python-dotenv>=0.19.0  # For environment variable management
+
+# Note: memryx package should be installed separately as per MemryX documentation
+# The RetinaFace, FaceNet512, and Age/Gender models (DFP files) should be available in the models directory 
