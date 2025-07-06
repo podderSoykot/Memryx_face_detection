@@ -116,7 +116,7 @@ class DFPModelCreator:
                 'mx_nc',
                 '-v',
                 '-m', str(model_path),
-                '-o', str(output_path)
+                '--dfp_fname', str(output_path)
             ]
             
             print(f"   Command: {' '.join(cmd)}")
@@ -147,7 +147,7 @@ class DFPModelCreator:
                 '-m'
             ] + [str(p) for p in model_paths] + [
                 '--autocrop',
-                '-o', str(output_path)
+                '--dfp_fname', str(output_path)
             ]
             
             print(f"   Command: {' '.join(cmd)}")

@@ -59,7 +59,7 @@ def compile_models():
             continue
         
         print(f"\nCompiling {model['name']}")
-        cmd = ['mx_nc', '-v', '-m', str(onnx_path), '-o', str(dfp_path)]
+        cmd = ['mx_nc', '-v', '-m', str(onnx_path), '--dfp_fname', str(dfp_path)]
         
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
@@ -77,7 +77,7 @@ def compile_models():
         onnx_paths = [str(onnx_dir / model['onnx']) for model in compiled_models]
         multi_dfp = dfp_dir / 'face_recognition_multi.dfp'
         
-        cmd = ['mx_nc', '-v', '-m'] + onnx_paths + ['--autocrop', '-o', str(multi_dfp)]
+        cmd = ['mx_nc', '-v', '-m'] + onnx_paths + ['--autocrop', '--dfp_fname', str(multi_dfp)]
         
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
