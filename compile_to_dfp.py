@@ -62,7 +62,7 @@ def compile_models():
             continue
         
         print(f"\nCompiling {model['name']}")
-        cmd = ['mx_nc', '-v', '-m', str(onnx_path), '-is', model['input_shape'], '--dfp_fname', str(dfp_path)]
+        cmd = ['mx_nc', '-v', '-m', str(onnx_path), '-is', model['input_shape'], '--autocrop', '--dfp_fname', str(dfp_path)]
         
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)

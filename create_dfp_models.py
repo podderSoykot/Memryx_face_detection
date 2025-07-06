@@ -121,7 +121,7 @@ class DFPModelCreator:
             if input_shape:
                 cmd.extend(['-is', input_shape])
             
-            cmd.extend(['--dfp_fname', str(output_path)])
+            cmd.extend(['--autocrop', '--dfp_fname', str(output_path)])
             
             print(f"   Command: {' '.join(cmd)}")
             
