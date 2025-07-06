@@ -107,7 +107,7 @@ class DFPModelCreator:
             print("❌ mx_nc (MemryX Neural Compiler) not found in PATH")
             return False
     
-    def compile_single_dfp(self, model_path: Path, output_path: Path) -> bool:
+    def compile_single_dfp(self, model_path: Path, output_path: Path, input_shape: str = None) -> bool:
         """Compile a single ONNX model to DFP."""
         try:
             print(f"🔧 Compiling {model_path.name} to DFP...")
@@ -115,9 +115,13 @@ class DFPModelCreator:
             cmd = [
                 'mx_nc',
                 '-v',
-                '-m', str(model_path),
-                '--dfp_fname', str(output_path)
+                '-m', str(model_path)
             ]
+            
+            if input_shape:
+                cmd.extend(['-is', input_shape])
+            
+            cmd.extend(['--dfp_fname', str(output_path)])
             
             print(f"   Command: {' '.join(cmd)}")
             
@@ -135,7 +139,7 @@ class DFPModelCreator:
             print(f"❌ Compilation error: {e}")
             return False
     
-    def compile_multi_model_dfp(self, model_paths: List[Path], output_path: Path) -> bool:
+    def compile_multi_model_dfp(self, model_paths: List[Path], output_path: Path, input_shapes: List[str] = None) -> bool:
         """Compile multiple ONNX models into a single DFP."""
         try:
             print(f"🔧 Compiling multi-model DFP...")
@@ -145,10 +149,16 @@ class DFPModelCreator:
                 'mx_nc',
                 '-v',
                 '-m'
-            ] + [str(p) for p in model_paths] + [
+            ] + [str(p) for p in model_paths]
+            
+            if input_shapes:
+                for shape in input_shapes:
+                    cmd.extend(['-is', shape])
+            
+            cmd.extend([
                 '--autocrop',
                 '--dfp_fname', str(output_path)
-            ]
+            ])
             
             print(f"   Command: {' '.join(cmd)}")
             
@@ -286,7 +296,8 @@ if __name__ == "__main__":
         
         for model_name, model_path in downloaded_models.items():
             dfp_path = self.dfp_dir / f"{model_name}.dfp"
-            if self.compile_single_dfp(model_path, dfp_path):
+            input_shape = f"{FACE_MODELS[model_name]['input_size'][0]},{FACE_MODELS[model_name]['input_size'][1]},3"
+            if self.compile_single_dfp(model_path, dfp_path, input_shape):
                 compiled_dfps.append((model_name, dfp_path))
         
         # Step 4: Compile multi-model DFP
@@ -297,7 +308,13 @@ if __name__ == "__main__":
             model_paths = list(downloaded_models.values())
             multi_dfp_path = self.dfp_dir / "face_recognition_multi.dfp"
             
-            if self.compile_multi_model_dfp(model_paths, multi_dfp_path):
+            # Create input shapes for multi-model compilation
+            input_shapes = []
+            for model_name in downloaded_models.keys():
+                input_shape = f"{FACE_MODELS[model_name]['input_size'][0]},{FACE_MODELS[model_name]['input_size'][1]},3"
+                input_shapes.append(input_shape)
+            
+            if self.compile_multi_model_dfp(model_paths, multi_dfp_path, input_shapes):
                 print(f"✅ Multi-model DFP created: {multi_dfp_path}")
                 
                 # Step 5: Create configuration

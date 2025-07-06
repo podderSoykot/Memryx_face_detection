@@ -33,17 +33,20 @@ def compile_models():
         {
             'name': 'retinaface',
             'onnx': 'det_10g.onnx',
-            'dfp': 'retinaface.dfp'
+            'dfp': 'retinaface.dfp',
+            'input_shape': '640,640,3'
         },
         {
             'name': 'arcface', 
             'onnx': 'w600k_r50.onnx',
-            'dfp': 'arcface.dfp'
+            'dfp': 'arcface.dfp',
+            'input_shape': '112,112,3'
         },
         {
             'name': 'age_gender',
             'onnx': 'genderage.onnx', 
-            'dfp': 'age_gender.dfp'
+            'dfp': 'age_gender.dfp',
+            'input_shape': '224,224,3'
         }
     ]
     
@@ -59,7 +62,7 @@ def compile_models():
             continue
         
         print(f"\nCompiling {model['name']}")
-        cmd = ['mx_nc', '-v', '-m', str(onnx_path), '--dfp_fname', str(dfp_path)]
+        cmd = ['mx_nc', '-v', '-m', str(onnx_path), '-is', model['input_shape'], '--dfp_fname', str(dfp_path)]
         
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
@@ -77,7 +80,14 @@ def compile_models():
         onnx_paths = [str(onnx_dir / model['onnx']) for model in compiled_models]
         multi_dfp = dfp_dir / 'face_recognition_multi.dfp'
         
-        cmd = ['mx_nc', '-v', '-m'] + onnx_paths + ['--autocrop', '--dfp_fname', str(multi_dfp)]
+        # Build command with input shapes
+        cmd = ['mx_nc', '-v', '-m'] + onnx_paths
+        
+        # Add input shapes for each model
+        for model in compiled_models:
+            cmd.extend(['-is', model['input_shape']])
+        
+        cmd.extend(['--autocrop', '--dfp_fname', str(multi_dfp)])
         
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
