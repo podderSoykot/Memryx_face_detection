@@ -71,18 +71,18 @@ MEMRYX_CONFIG = {
     # Model paths for MemryX DFP files
     'models': {
         'retinaface': {
-            'dfp_path': '../../models/retinaface/retinaface_mnet025_v1.dfp',
-            'input_size': (640, 640),
+            'dfp_path': 'dfp_models/retinaface_memryx.dfp',
+            'input_size': (320, 320),
             'confidence_threshold': 0.7,
             'nms_threshold': 0.4,
         },
         'facenet512': {
-            'dfp_path': '../../models/facenet/facenet512.dfp',
-            'input_size': (160, 160),
+            'dfp_path': 'dfp_models/facenet512_memryx_raw_embeddings.dfp',
+            'input_size': (112, 112),
             'embedding_size': 512,
         },
         'age_gender': {
-            'dfp_path': '../../models/age_gender/age_gender_model.dfp',
+            'dfp_path': 'dfp_models/genderage.dfp',
             'input_size': (224, 224),
             'age_output_size': 101,  
             'gender_output_size': 2, 

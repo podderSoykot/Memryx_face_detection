@@ -32,9 +32,9 @@ def compile_models():
     models = [
         {
             'name': 'retinaface',
-            'onnx': 'det_10g.onnx',
+            'onnx': 'det_2.5g.onnx',
             'dfp': 'retinaface.dfp',
-            'input_shape': '640,640,3'
+            'input_shape': '320,320,3'
         },
         {
             'name': 'arcface', 

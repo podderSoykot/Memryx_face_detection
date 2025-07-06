@@ -27,10 +27,10 @@ from typing import Dict, List, Optional
 # Model configurations with download URLs
 FACE_MODELS = {
     'retinaface': {
-        'description': 'RetinaFace face detection model',
-        'source_url': 'https://github.com/yakhyo/facial-analysis/releases/download/v0.0.1/det_10g.onnx',
+        'description': 'RetinaFace face detection model (smaller version)',
+        'source_url': 'https://github.com/yakhyo/facial-analysis/releases/download/v0.0.1/det_2.5g.onnx',
         'filename': 'retinaface.onnx',
-        'input_size': (640, 640),
+        'input_size': (320, 320),
         'format': 'onnx'
     },
     'arcface': {
